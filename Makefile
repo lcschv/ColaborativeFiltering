@@ -5,9 +5,9 @@ OBJDIR = bin
 OUTPUTDIR = OUTPUT
 # RUNSDIR = indexout indexoutAnchors searchfiles
 # OBJS := $(addprefix $(OBJDIR)/,loaders.o main.o searcher.o vector.o)
-OBJS := $(addprefix $(OBJDIR)/, main.o)
+OBJS := $(addprefix $(OBJDIR)/, main.o input.o)
 
-all:clean $(OBJS) main 
+all:clean $(OBJS) main
 
 main: $(OBJS)
 	g++ -std=c++11 $(OBJS) -o main
@@ -15,11 +15,8 @@ main: $(OBJS)
 $(OBJDIR)/main.o: main.cpp 
 	g++ -std=c++11 -c main.cpp -o bin/main.o
 
-
-
-
-# $(OBJDIR)/loaders.o: utils/loaders.cpp utils/loaders.h 
-# 	g++ -std=c++11 -c utils/loaders.cpp -o bin/loaders.o
+$(OBJDIR)/input.o: src/input.cpp lib/input.h 
+	g++ -std=c++11 -c src/input.cpp -o bin/input.o
 
 # $(OBJDIR)/searcher.o: utils/searcher.cpp utils/searcher.h 
 # 	g++ -std=c++11 -c utils/searcher.cpp -o bin/searcher.o
@@ -39,3 +36,5 @@ clean:
 	rm -f bin/*.o
 	@echo Old binaries deleted...
 	@echo Creating new binaries ...
+
+

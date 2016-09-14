@@ -13,13 +13,10 @@ using namespace std;
 
 
 int main(){
-	LoadInput* loadinput = new LoadInput ();
-	cout << "HI";
-	string a;
-	quadruple teste;
+	LoadInput loadinput;
+	std::string a;
+	vector<quadruple> teste;
+	loadinput.readInputFiletoBuffer();
 
-	std::teste = loadinput->readInputFile(a);
-
-
-
+return 1;
 }

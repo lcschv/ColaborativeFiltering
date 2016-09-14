@@ -6,7 +6,12 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <boost/algorithm/string.hpp>
+#include <boost/tokenizer.hpp>
 using namespace std;
+
+
+
 
 struct quadruple{
 	int user;
@@ -18,13 +23,13 @@ struct quadruple{
 
 class LoadInput{
 	private:
-
+		std::vector<quadruple> bufferedFile;
 	public:
-		LoadInput ( ){
+		LoadInput(){
 			std::cout << "Loading inputs..\n";
 		}
 		//Method that read the input file to a buffer.
-		vector<quadruple> readInputFile(string filein);
+		void readInputFiletoBuffer();
 };
 
 #endif
