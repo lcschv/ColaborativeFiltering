@@ -1,0 +1,15 @@
+As stated in the specification document for this assignment, your implementation should be executed using the following command:
+
+./recommender ratings.csv targets.csv > submission.csv
+
+
+File descriptions
+
+You will need the following CSV files:
+
+(1) ratings.csv, containing historical ratings for 336,672 <user, item> pairs
+(2) targets.csv, containing the 77,276 <user, item> pairs for prediction
+
+In addition, a sample submission-rand.csv file (with randomly assigned predictions) is provided for your convenience.
+
+Note that each of these files contains a header line.
