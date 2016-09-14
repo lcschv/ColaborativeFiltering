@@ -1,10 +1,6 @@
 # CXXFLAGS = -I /usr/local/include/htmlcxx -L /usr/local/lib -lhtmlcxx
 
 
-
-
-
-
 OBJDIR = bin
 OUTPUTDIR = OUTPUT
 # RUNSDIR = indexout indexoutAnchors searchfiles
