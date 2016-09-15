@@ -30,3 +30,43 @@ void LoadInput::readInputFiletoBuffer(){
 		};
     };
 };
+
+void LoadInput::readTargetFile(){
+	ifstream targetFile;
+	string line;
+	vector<string> words (4);
+    targetFile.open("files/targets.csv");
+    // Removing header of the file ..
+    getline(targetFile,line);
+    quadruple tempQuadruple;
+    //Treating fields of the file ..
+    while (!targetFile.eof()){
+    	
+        getline(targetFile,line);
+        if (line != ""){
+			boost::split(words, line, boost::is_any_of(":"));
+			//removing character U from users.
+			words[0].erase(0,1);
+			//removing character i from itens.
+			words[1].erase(0,1);
+			targetMap[stoi(words[0])].push_back(stoi(words[1]));
+		
+		};
+    };
+};
+
+
+
+
+
+void LoadInput::loadUsers(){
+	for (auto i:bufferedFile){
+		UsersMap[i.user][i.item] = i.rating; 
+	}
+};
+
+void LoadInput::loadItems(){
+	for (auto i:bufferedFile){
+		ItemsMap[i.item][i.user] = i.rating; 
+	}
+};

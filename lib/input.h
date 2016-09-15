@@ -24,12 +24,24 @@ struct quadruple{
 class LoadInput{
 	private:
 		std::vector<quadruple> bufferedFile;
+		unordered_map<int,unordered_map<int,float>> UsersMap;
+		unordered_map<int,unordered_map<int,float>> ItemsMap;
+		unordered_map<int,vector<int>> targetMap;
+
 	public:
 		LoadInput(){
 			std::cout << "Loading inputs..\n";
+			readInputFiletoBuffer();
+			readTargetFile();
+			loadUsers();
+			loadItems();
 		}
 		//Method that read the input file to a buffer.
 		void readInputFiletoBuffer();
+		void readTargetFile();
+		void loadItens();
+		void loadUsers();
+		void loadItems();
 };
 
 #endif
