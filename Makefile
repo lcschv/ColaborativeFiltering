@@ -4,19 +4,23 @@
 OBJDIR = bin
 OUTPUTDIR = OUTPUT
 # RUNSDIR = indexout indexoutAnchors searchfiles
-# OBJS := $(addprefix $(OBJDIR)/,loaders.o main.o searcher.o vector.o)
-OBJS := $(addprefix $(OBJDIR)/, main.o input.o)
+# OBJS := $(addprefix $(OBJDIR)/,loaders.o recommender.o searcher.o vector.o)
+OBJS := $(addprefix $(OBJDIR)/, recommender.o input.o itembased.o)
 
-all:clean $(OBJS) main
+all:clean $(OBJS) recommender
 
-main: $(OBJS)
-	g++ -std=c++11 $(OBJS) -o main
+recommender: $(OBJS)
+	g++ -std=c++11 $(OBJS) -o recommender
 
-$(OBJDIR)/main.o: main.cpp 
-	g++ -std=c++11 -c main.cpp -o bin/main.o
+$(OBJDIR)/recommender.o: recommender.cpp 
+	g++ -std=c++11 -c recommender.cpp -o bin/recommender.o
 
 $(OBJDIR)/input.o: src/input.cpp lib/input.h 
 	g++ -std=c++11 -c src/input.cpp -o bin/input.o
+
+$(OBJDIR)/itembased.o: src/itembased.cpp lib/itembased.h 
+	g++ -std=c++11 -c src/itembased.cpp -o bin/itembased.o
+
 
 # $(OBJDIR)/searcher.o: utils/searcher.cpp utils/searcher.h 
 # 	g++ -std=c++11 -c utils/searcher.cpp -o bin/searcher.o
