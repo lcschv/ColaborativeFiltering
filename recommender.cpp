@@ -13,10 +13,12 @@
 using namespace std;
 
 
-int main(){
-
+int main(int argc, char *argv[]){
+	if (argc != 3){
+		cout << "Wrong parameters, please use ./recommender ratings.csv targets.csv > submission.csv" <<endl;
+	return 0;
+	}
 	LoadInput loadinput;
 	ItemBasedRecommender itembased(&loadinput);
-
 return 0;
 }
