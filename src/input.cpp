@@ -106,4 +106,5 @@ vector<int> LoadInput::getListofUsersthatRatedItem(int item){
 		// cout << "usuarios que deram rating ao item:" <<item<<"--->"<<i.first<<endl;
 		listofUsersthatRatedItem.push_back(i.first);
 	}
+	return listofUsersthatRatedItem;
 }
