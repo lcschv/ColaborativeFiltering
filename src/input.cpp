@@ -38,7 +38,7 @@ void LoadInput::readTargetFile(){
     targetFile.open("files/targetsample.csv");
     // Removing header of the file ..
     getline(targetFile,line);
-    quadruple tempQuadruple;
+    tupla tempTuple;
     //Treating fields of the file ..
     while (!targetFile.eof()){
 
@@ -49,7 +49,9 @@ void LoadInput::readTargetFile(){
 			words[0].erase(0,1);
 			//removing character i from itens.
 			words[1].erase(0,1);
-			targetMap[stoi(words[0])].push_back(stoi(words[1]));
+			tempTuple.user = stoi(words[0]);
+			tempTuple.item = stoi(words[1]); 
+			targetBuffer.push_back(tempTuple);
 		};
     };
 };
@@ -67,12 +69,12 @@ void LoadInput::loadItems(){
 };
 
 void LoadInput::printTargetMap(){
-	for (auto i:targetMap){
-		for (auto item:i.second){
-			cout <<"usuario:"<<i.first <<"	item:"<<item<<endl;
-		}		
-	}
+	for (auto i:targetBuffer){
+		cout <<"usuario:"<<i.user <<"	item:"<<i.item <<endl;
+	};
 };
+
+
 
 
 void LoadInput::printUsersMap(){
@@ -82,29 +84,53 @@ void LoadInput::printUsersMap(){
 		}		
 	}	
 }
-
 void LoadInput::printItemsMap(){
-	
+	for (auto i:ItemsMap){
+		for (auto j:i.second){
+			cout <<"item:"<<i.first <<"	usuario:"<<j.first<<"	rating:"<<j.second<<endl;
+		}		
+	}	
 }
+
 
 void LoadInput::printBufferedFile(){
 
 }
 
-vector<int> LoadInput::getListofItensLikedbyUser(int user){
-	vector<int> listOfItensLikedbyUser;
+vector<tuplaItemScore> LoadInput::getListofItensLikedbyUser(int user){
+	vector<tuplaItemScore> listOfItensLikedbyUser;
+	tuplaItemScore tempTupla;
 	for (auto i:UsersMap[user]){
+		tempTupla.item = i.first;
+		tempTupla.rating = i.second;
 		// cout << "items curtidos pelo usuario:"<<user<<"--->"<<i.first<<endl;
-		listOfItensLikedbyUser.push_back(i.first);
+		listOfItensLikedbyUser.push_back(tempTupla);
 	}
 	return listOfItensLikedbyUser;
 }
 
-vector<int> LoadInput::getListofUsersthatRatedItem(int item){
-	vector<int> listofUsersthatRatedItem;
+vector<tuplaUserScore> LoadInput::getListofUsersthatRatedItem(int item){
+	vector<tuplaUserScore> listofUsersthatRatedItem;
+	tuplaUserScore tempTuple;
 	for (auto i:ItemsMap[item]){
+		tempTuple.user = i.first;
+		tempTuple.rating = i.second;
 		// cout << "usuarios que deram rating ao item:" <<item<<"--->"<<i.first<<endl;
-		listofUsersthatRatedItem.push_back(i.first);
+		listofUsersthatRatedItem.push_back(tempTuple);
 	}
 	return listofUsersthatRatedItem;
+}
+
+
+tupla LoadInput::getNextTarget(){
+	tupla tempTuple;
+	if (!targetBuffer.empty()){
+		tempTuple = targetBuffer.back();
+		targetBuffer.pop_back();
+		return tempTuple;
+	} else {
+		tempTuple.user = -1;
+		tempTuple.item = -1;
+		return tempTuple;
+	}
 }

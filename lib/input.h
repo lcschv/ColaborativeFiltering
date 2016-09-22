@@ -19,18 +19,27 @@ struct quadruple{
 	int rating;
 	int timestamp;
 };
-
-
+struct tupla{
+	int user;
+	int item;
+};
+struct tuplaUserScore{
+	int user;
+	int rating;
+};
+struct tuplaItemScore{
+	int item;
+	int rating;
+};
 class LoadInput{
 	private:
 		std::vector<quadruple> bufferedFile;
 		unordered_map<int,unordered_map<int,float>> UsersMap;
-		unordered_map<int,unordered_map<int,float>> ItemsMap;
-		unordered_map<int,vector<int>> targetMap;
-		vector<int> listofItens;
-		vector<int> listofUsers;
+		
+		vector<tupla> targetBuffer;
 
 	public:
+		unordered_map<int,unordered_map<int,int>> ItemsMap;
 		LoadInput(){
 			std::cout << "Loading inputs..\n";
 			readInputFiletoBuffer();
@@ -38,9 +47,8 @@ class LoadInput{
 			loadUsers();
 			loadItems();
 			// printTargetMap();
+			// printItemsMap();
 			// printUsersMap();
-			listofItens = getListofItensLikedbyUser(1);
-			listofUsers = getListofUsersthatRatedItem(listofItens[2]);
 		}
 		//Method that read the input file to a buffer.
 		void readInputFiletoBuffer();
@@ -52,8 +60,9 @@ class LoadInput{
 		void printUsersMap();
 		void printItemsMap();
 		void printBufferedFile();
-		vector<int> getListofItensLikedbyUser(int user);
-		vector<int> getListofUsersthatRatedItem(int item);
+		vector<tuplaItemScore> getListofItensLikedbyUser(int user);
+		vector<tuplaUserScore> getListofUsersthatRatedItem(int item);
+		tupla getNextTarget();
 };
 
 #endif

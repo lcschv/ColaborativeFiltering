@@ -5,9 +5,13 @@
 class ItemBasedRecommender{
 private:
 	LoadInput* loadinput;
+	vector<tuplaItemScore> ItemsLikedbyTargetUser;
+	vector<tuplaUserScore> targetvectorlist;
 public:
 	ItemBasedRecommender(LoadInput* loadinput);
-	void Similarity(int targetItem, int item);
+	float Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist);
+	void Recommender();
+
 };
 
 
