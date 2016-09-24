@@ -42,19 +42,19 @@ class LoadInput{
 		unordered_map<int,unordered_map<int,int>> ItemsMap;
 		unordered_map<int,string> MapCorrectUserId;
 		unordered_map<int,string> MapCorrectItemId;
-		LoadInput(){
+		LoadInput(string &ratingsfile, string &targetsfile);//{
 			// std::cout << "Loading inputs..\n";
-			readInputFiletoBuffer();
-			readTargetFile();
-			loadUsers();
-			loadItems();
+			// readInputFiletoBuffer();
+			// readTargetFile();
+			// loadUsers();
+			// loadItems();
 			// printTargetMap();
 			// printItemsMap();
 			// printUsersMap();
-		}
+		//}
 		//Method that read the input file to a buffer.
-		void readInputFiletoBuffer();
-		void readTargetFile();
+		void readInputFiletoBuffer(string &ratingsfile);
+		void readTargetFile(string &targetsfile);
 		void loadItens();
 		void loadUsers();
 		void loadItems();

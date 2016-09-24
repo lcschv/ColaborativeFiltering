@@ -1,12 +1,22 @@
 #include "../lib/input.h"
 
 
+
+LoadInput::LoadInput(string &ratingsfile, string &targetsfile){
+	readInputFiletoBuffer(ratingsfile);
+	readTargetFile(targetsfile);
+	loadUsers();
+	loadItems();
+}
+
+
 /*Method that reads the ratings.csv and load it into an buffer in the format of the quadruple [user,item,rating,timestamp]*/
-void LoadInput::readInputFiletoBuffer(){
+void LoadInput::readInputFiletoBuffer(string &ratingsfile){
 	ifstream inputfile;
+	// cout <<ratingsfile<<endl;
 	string line;
 	vector<string> words (4);
-    inputfile.open("files/ratings.csv");
+    inputfile.open(ratingsfile);
     // Removing header of the file ..
     getline(inputfile,line);
     quadruple tempQuadruple;
@@ -30,11 +40,11 @@ void LoadInput::readInputFiletoBuffer(){
     };
 };
 
-void LoadInput::readTargetFile(){
+void LoadInput::readTargetFile(string &targetsfile){
 	ifstream targetFile;
 	string line;
 	vector<string> words (4);
-    targetFile.open("files/targets.csv");
+    targetFile.open(targetsfile);
     // Removing header of the file ..
     getline(targetFile,line);
     tupla tempTuple;

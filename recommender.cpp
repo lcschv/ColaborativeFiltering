@@ -17,15 +17,16 @@ using namespace std;
 
 int main(int argc,char *argv[]){
 	
+	if (argc != 3){
+		cout << "Wrong parameters, please use ./recommender ratings.csv targets.csv > submission.csv" <<endl;
+	return 0;
+	}
+		string ratingsfile(argv[1]);
+		string targetsfile(argv[2]);
+	// cout <<"Antes de chamar.." <<ratingsfile<<endl;
+	LoadInput loadinput(ratingsfile,targetsfile);
 
-	// if (argc != 3){
-	// 	cout << "Wrong parameters, please use ./recommender ratings.csv targets.csv > submission.csv" <<endl;
-	// return 0;
-	// }
-	// string str(argv[1]);
-	// cout << str<<endl;
 
-	LoadInput loadinput;
 	// ItemBasedRecommender itembased(&loadinput);
 	NonPersonalizedRecommender MeanBased(&loadinput);
 
