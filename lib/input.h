@@ -38,7 +38,7 @@ class LoadInput{
 		vector<tupla> targetBuffer;
 
 	public:
-		unordered_map<int,unordered_map<int,float>> UsersMap;
+		unordered_map<int,unordered_map<int,double>> UsersMap;
 		unordered_map<int,unordered_map<int,int>> ItemsMap;
 		unordered_map<int,string> MapCorrectUserId;
 		unordered_map<int,string> MapCorrectItemId;

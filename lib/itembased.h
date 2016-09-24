@@ -4,7 +4,7 @@
 
 struct tuplaItemSimilarity{
 	int item;
-	float simi;
+	double simi;
 };
 struct cmp {
 	bool operator()( const tuplaItemSimilarity & e1, const tuplaItemSimilarity & e2) {
@@ -21,12 +21,12 @@ private:
 	vector<tuplaItemSimilarity> KNN;
 public:
 	ItemBasedRecommender(LoadInput* loadinput);
-	float Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist);
+	double Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist);
 	void Recommender();
 	void MyHeapPush(tuplaItemSimilarity truplas);
-	float WeightedAverage(int Targetuser);
-	float UserAverage(const vector<tuplaItemScore> &itemslist);
-	float ItemAverage(const vector<tuplaUserScore> &targetvectorlist);
+	double WeightedAverage(int Targetuser);
+	double UserAverage(const vector<tuplaItemScore> &itemslist);
+	double ItemAverage(const vector<tuplaUserScore> &targetvectorlist);
 };
 
 

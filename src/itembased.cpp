@@ -17,7 +17,7 @@ ItemBasedRecommender::ItemBasedRecommender(LoadInput* loadinput){
 void ItemBasedRecommender::Recommender(){
 	tupla nextTarget;
 	tuplaItemSimilarity tempTupla;
-	float r = 0;
+	double r = 0;
 	nextTarget = loadinput->getNextTarget();
 	while (nextTarget.user != -1){
 		// cout << "Error nesse pia aqui:" << nextTarget.user<<" item:"<<nextTarget.item<<endl;
@@ -31,7 +31,7 @@ void ItemBasedRecommender::Recommender(){
 			}else{
 				// cout << "Dei erro aqui quando target vector nao esta vazio"<<endl;
 				for (auto item:ItemsLikedbyTargetUser){
-					float similaridade = Similarity(nextTarget.item , item, targetvectorlist);
+					double similaridade = Similarity(nextTarget.item , item, targetvectorlist);
 					tempTupla.item = item.item;
 					tempTupla.simi = similaridade;
 					// cout << "calculei simi normalmente.."<<similaridade<<endl;
@@ -61,8 +61,8 @@ void ItemBasedRecommender::Recommender(){
 };
 
 
-float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist){
-	float denom_a, denom_b, dot;
+double ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist){
+	double denom_a, denom_b, dot;
 	denom_a = 0;
 	denom_b = 0;
 	dot = 0;
@@ -91,7 +91,7 @@ float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, cons
 
 void ItemBasedRecommender::MyHeapPush(tuplaItemSimilarity truplas) {
 	// cout << "Entrei no push.."<<endl;
-	if (KNN.size() < 5 && truplas.simi != 0){
+	if (KNN.size() < 20 && truplas.simi != 0){
 		// cout << "entrei aqui.."<<endl;
 		KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
@@ -105,8 +105,8 @@ void ItemBasedRecommender::MyHeapPush(tuplaItemSimilarity truplas) {
 };
 
 
-float ItemBasedRecommender::WeightedAverage(int Targetuser){
-	float predict, numerator ,denominator;
+double ItemBasedRecommender::WeightedAverage(int Targetuser){
+	double predict, numerator ,denominator;
 	predict = 0;
 	numerator = 0;
 	denominator = 0;
@@ -123,8 +123,8 @@ float ItemBasedRecommender::WeightedAverage(int Targetuser){
 	}
 };
 
-float ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist){
-	float numerator, predict;
+double ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist){
+	double numerator, predict;
 	numerator = 0;
 	predict = 0;
 	for (auto it:itemslist){
@@ -139,8 +139,8 @@ float ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist)
 };
 
 
-float ItemBasedRecommender::ItemAverage(const vector<tuplaUserScore> &targetvectorlist){
-	float numerator, predict;
+double ItemBasedRecommender::ItemAverage(const vector<tuplaUserScore> &targetvectorlist){
+	double numerator, predict;
 		numerator = 0;
 		predict = 0;
 		for (auto it:targetvectorlist){
