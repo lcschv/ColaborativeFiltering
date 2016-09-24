@@ -62,7 +62,6 @@ void ItemBasedRecommender::Recommender(){
 
 
 float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist){
-	vector<int> tempListofusers;
 	float denom_a, denom_b, dot;
 	denom_a = 0;
 	denom_b = 0;
@@ -81,7 +80,11 @@ float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, cons
 			denom_b += pow(it.second,2); 
 		}
 	}
-	return dot / (sqrt(denom_a) * sqrt(denom_b));
+	if (denom_a != 0 && denom_b != 0){
+		return dot / (sqrt(denom_a) * sqrt(denom_b));
+	}else{
+		return 0;
+	}
 };
 
 
@@ -128,7 +131,7 @@ float ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist)
 		numerator += it.rating;
 	}
 	if (itemslist.size() == 0){
-		return 0;
+		return 5;
 	}else{
 		predict = numerator / itemslist.size();
 		return predict;	
@@ -144,10 +147,10 @@ float ItemBasedRecommender::ItemAverage(const vector<tuplaUserScore> &targetvect
 			numerator += it.rating;
 		}
 		if (targetvectorlist.size() == 0){
-			return 0;
+			return 5;
 		}else{
 			predict = numerator / targetvectorlist.size();
-			return predict;	
+			return predict;
 		}
 };
 	

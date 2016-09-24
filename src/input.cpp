@@ -9,7 +9,7 @@ void LoadInput::readInputFiletoBuffer(){
 	ifstream inputfile;
 	string line;
 	vector<string> words (4);
-    inputfile.open("files/ratings.csv");
+    inputfile.open("files/ratingssample.csv");
     // Removing header of the file ..
     getline(inputfile,line);
     quadruple tempQuadruple;
@@ -37,7 +37,7 @@ void LoadInput::readTargetFile(){
 	ifstream targetFile;
 	string line;
 	vector<string> words (4);
-    targetFile.open("files/targets.csv");
+    targetFile.open("files/targetsample.csv");
     // Removing header of the file ..
     getline(targetFile,line);
     tupla tempTuple;
