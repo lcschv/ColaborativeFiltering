@@ -18,46 +18,34 @@ void ItemBasedRecommender::Recommender(){
 	tupla nextTarget;
 	tuplaItemSimilarity tempTupla;
 	float r = 0;
-	// vector<int> ItemsLikedbyTargetUser;
-	// vector<int> UsersthatLikedTarget;
 	nextTarget = loadinput->getNextTarget();
 	while (nextTarget.user != -1){
-		// cout << "Calculando nextTarget:"<<nextTarget.user<<"item: "<<nextTarget.item<<endl;
 		if (loadinput->UsersMap.find(nextTarget.user) != loadinput->UsersMap.end()){	
-			//List of itens liked by the user target, this will be used to calculate the similarity.
+			
 			ItemsLikedbyTargetUser = loadinput->getListofItensLikedbyUser(nextTarget.user);
 			targetvectorlist = loadinput->getListofUsersthatRatedItem(nextTarget.item);
-			// cout << "Cheguei dps do retorno das listas de itens e usuarios.."<<endl;
-			// cout << "usuariotarget: "<<nextTarget.user<<"->itemtarget:"<<nextTarget.item<<endl;
-			for (auto item:ItemsLikedbyTargetUser){
-				// cout << "Similaridade do target para o item "<<item<<endl;
-				float similaridade = Similarity(nextTarget.item , item, targetvectorlist);
-				// cout << "Calculei a similaridade certinho .."<<endl;
-				tempTupla.item = item.item;
-				tempTupla.simi = similaridade;
-				MyHeapPush(tempTupla);
-				// cout << "sai do push .."<<endl;
-
-				//cout << "similaridades sao: "<< similaridade<<endl;
-			}
-			if (!KNN.empty()){
-				r = WeightedAverage(nextTarget.user);
+			if (targetvectorlist.empty()){
+				r = UserAverage(ItemsLikedbyTargetUser);
 			}else{
-				if (!ItemsLikedbyTargetUser.empty()){
+				for (auto item:ItemsLikedbyTargetUser){
+					float similaridade = Similarity(nextTarget.item , item, targetvectorlist);
+					tempTupla.item = item.item;
+					tempTupla.simi = similaridade;
+					MyHeapPush(tempTupla);
+				}
+				if (!KNN.empty()){
+					r = WeightedAverage(nextTarget.user);
+				}else{
 					r = UserAverage(ItemsLikedbyTargetUser);
-				}else {
-					r = 5;
 				}
 			}
-		} else{
-			ItemsLikedbyTargetUser = loadinput->getListofItensLikedbyUser(nextTarget.user);
-			if (ItemsLikedbyTargetUser.size() != 0){
+		}else {
+			targetvectorlist = loadinput->getListofUsersthatRatedItem(nextTarget.item);
+			if (targetvectorlist.size() != 0){
 				r = ItemAverage(targetvectorlist);
 			}else{
-				r = 5;
-			}
-			
-			// cout <<nextTarget.user<<":"<<nextTarget.item<<","<<r<<endl;
+				r = 6;
+			}			
 		}
 		cout <<nextTarget.user<<":"<<nextTarget.item<<","<<r<<endl;
 		nextTarget = loadinput->getNextTarget();
@@ -90,10 +78,10 @@ float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, cons
 
 void ItemBasedRecommender::MyHeapPush(tuplaItemSimilarity truplas) {
 	// cout << "Entrei no push.."<<endl;
-	if (KNN.capacity() < 5){
+	if (KNN.size() < 5 && truplas.simi != 0){
 		KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
-	} else if (KNN.front().simi < truplas.simi && !KNN.empty()){
+	} else if (KNN.front().simi < truplas.simi){
 		KNN.erase(KNN.begin());
 		KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
