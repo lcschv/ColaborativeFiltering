@@ -9,7 +9,7 @@ void LoadInput::readInputFiletoBuffer(){
 	ifstream inputfile;
 	string line;
 	vector<string> words (4);
-    inputfile.open("files/ratings.csv");
+    inputfile.open("files/ratingssample.csv");
     // Removing header of the file ..
     getline(inputfile,line);
     quadruple tempQuadruple;
@@ -26,6 +26,8 @@ void LoadInput::readInputFiletoBuffer(){
 			tempQuadruple.item = stoi(words[1]);
 			tempQuadruple.rating = stoi(words[2]);
 			tempQuadruple.timestamp = stoi(words[3]);
+			MapCorrectUserId[stoi(words[0])] = words[0];
+			MapCorrectItemId[stoi(words[1])] = words[1];
 			bufferedFile.push_back(tempQuadruple);
 		};
     };
@@ -35,7 +37,7 @@ void LoadInput::readTargetFile(){
 	ifstream targetFile;
 	string line;
 	vector<string> words (4);
-    targetFile.open("files/targets.csv");
+    targetFile.open("files/targetsample.csv");
     // Removing header of the file ..
     getline(targetFile,line);
     tupla tempTuple;
@@ -50,7 +52,9 @@ void LoadInput::readTargetFile(){
 			//removing character i from itens.
 			words[1].erase(0,1);
 			tempTuple.user = stoi(words[0]);
-			tempTuple.item = stoi(words[1]); 
+			tempTuple.item = stoi(words[1]);
+			MapCorrectUserId[stoi(words[0])] = words[0];
+			MapCorrectItemId[stoi(words[1])] = words[1];
 			targetBuffer.push_back(tempTuple);
 		};
     };

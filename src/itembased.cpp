@@ -20,18 +20,23 @@ void ItemBasedRecommender::Recommender(){
 	float r = 0;
 	nextTarget = loadinput->getNextTarget();
 	while (nextTarget.user != -1){
+		// cout << "Error nesse pia aqui:" << nextTarget.user<<" item:"<<nextTarget.item<<endl;
 		if (loadinput->UsersMap.find(nextTarget.user) != loadinput->UsersMap.end()){	
 			
 			ItemsLikedbyTargetUser = loadinput->getListofItensLikedbyUser(nextTarget.user);
 			targetvectorlist = loadinput->getListofUsersthatRatedItem(nextTarget.item);
 			if (targetvectorlist.empty()){
+				// cout << "Dei erro aqui quando target vector ta vazio.."<<endl;
 				r = UserAverage(ItemsLikedbyTargetUser);
 			}else{
+				// cout << "Dei erro aqui quando target vector nao esta vazio"<<endl;
 				for (auto item:ItemsLikedbyTargetUser){
 					float similaridade = Similarity(nextTarget.item , item, targetvectorlist);
 					tempTupla.item = item.item;
 					tempTupla.simi = similaridade;
+					// cout << "calculei simi normalmente.."<<similaridade<<endl;
 					MyHeapPush(tempTupla);
+					// cout << "Dei o push normalmente.."<<endl;
 				}
 				if (!KNN.empty()){
 					r = WeightedAverage(nextTarget.user);
@@ -47,7 +52,7 @@ void ItemBasedRecommender::Recommender(){
 				r = 6;
 			}			
 		}
-		cout <<nextTarget.user<<":"<<nextTarget.item<<","<<r<<endl;
+		cout <<"u"<<loadinput->MapCorrectUserId[nextTarget.user]<<":i"<<loadinput->MapCorrectItemId[nextTarget.item]<<","<<r<<endl;
 		nextTarget = loadinput->getNextTarget();
 		ItemsLikedbyTargetUser.clear();
 		targetvectorlist.clear();
@@ -79,13 +84,16 @@ float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, cons
 void ItemBasedRecommender::MyHeapPush(tuplaItemSimilarity truplas) {
 	// cout << "Entrei no push.."<<endl;
 	if (KNN.size() < 5 && truplas.simi != 0){
+		// cout << "entrei aqui.."<<endl;
 		KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
-	} else if (KNN.front().simi < truplas.simi){
+	} else if (!KNN.empty() && KNN.front().simi < truplas.simi){
+		// cout << "entrei no segundo caso"<<endl;
 		KNN.erase(KNN.begin());
 		KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
 	} 
+	// cout << "Entrei nao sei o que deu ero.."<<endl;
 };
 
 

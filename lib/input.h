@@ -40,8 +40,10 @@ class LoadInput{
 	public:
 		unordered_map<int,unordered_map<int,float>> UsersMap;
 		unordered_map<int,unordered_map<int,int>> ItemsMap;
+		unordered_map<int,string> MapCorrectUserId;
+		unordered_map<int,string> MapCorrectItemId;
 		LoadInput(){
-			std::cout << "Loading inputs..\n";
+			// std::cout << "Loading inputs..\n";
 			readInputFiletoBuffer();
 			readTargetFile();
 			loadUsers();
