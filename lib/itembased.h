@@ -1,6 +1,7 @@
 #ifndef ITEMBASED_H
 #define ITEMBASED_H
 #include "input.h"
+#include <math.h> 
 
 struct tuplaItemSimilarity{
 	int item;

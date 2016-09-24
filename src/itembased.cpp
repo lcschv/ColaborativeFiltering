@@ -1,5 +1,4 @@
 #include "../lib/itembased.h"
-# include <math.h> 
 
 //Calculate the similarity between two itens.
 
@@ -9,9 +8,7 @@ ItemBasedRecommender::ItemBasedRecommender(LoadInput* loadinput){
     this->loadinput = loadinput;
     cout << "UserId:ItemId,Prediction"<<endl;
     Recommender();
-    
 };
-
 
 
 void ItemBasedRecommender::Recommender(){
@@ -116,7 +113,7 @@ double ItemBasedRecommender::WeightedAverage(int Targetuser){
 		denominator += it.simi;
 	}
 	if (denominator == 0){
-		return 5;
+		return 6.87;
 	}else{
 		predict = numerator/denominator;
 		return predict;
@@ -131,7 +128,7 @@ double ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist
 		numerator += it.rating;
 	}
 	if (itemslist.size() == 0){
-		return 5;
+		return 6.87;
 	}else{
 		predict = numerator / itemslist.size();
 		return predict;	
@@ -147,7 +144,7 @@ double ItemBasedRecommender::ItemAverage(const vector<tuplaUserScore> &targetvec
 			numerator += it.rating;
 		}
 		if (targetvectorlist.size() == 0){
-			return 5;
+			return 6.87;
 		}else{
 			predict = numerator / targetvectorlist.size();
 			return predict;

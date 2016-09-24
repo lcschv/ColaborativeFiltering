@@ -1,9 +1,6 @@
 #include "../lib/input.h"
 
 
-
-
-
 /*Method that reads the ratings.csv and load it into an buffer in the format of the quadruple [user,item,rating,timestamp]*/
 void LoadInput::readInputFiletoBuffer(){
 	ifstream inputfile;
