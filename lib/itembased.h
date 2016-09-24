@@ -26,6 +26,7 @@ public:
 	void MyHeapPush(tuplaItemSimilarity truplas);
 	float WeightedAverage(int Targetuser);
 	float UserAverage(const vector<tuplaItemScore> &itemslist);
+	float ItemAverage(const vector<tuplaUserScore> &targetvectorlist);
 };
 
 

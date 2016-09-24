@@ -34,11 +34,11 @@ struct tuplaItemScore{
 class LoadInput{
 	private:
 		std::vector<quadruple> bufferedFile;
-		unordered_map<int,unordered_map<int,float>> UsersMap;
 		
 		vector<tupla> targetBuffer;
 
 	public:
+		unordered_map<int,unordered_map<int,float>> UsersMap;
 		unordered_map<int,unordered_map<int,int>> ItemsMap;
 		LoadInput(){
 			std::cout << "Loading inputs..\n";
