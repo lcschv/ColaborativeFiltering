@@ -68,13 +68,18 @@ float ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, cons
 	denom_b = 0;
 	dot = 0;
 	for (auto i:targetvectorlist){
-		denom_a += pow(i.rating,2);
+		if (i.rating != 0){
+			denom_a += pow(i.rating,2);
+		}
+
 		if (loadinput->ItemsMap[item.item].find(i.user) != loadinput->ItemsMap[item.item].end()){
 			dot += loadinput->ItemsMap[item.item][i.user] * i.rating;
 		}
 	}
 	for (auto it:loadinput->ItemsMap[item.item]){
-		denom_b += pow(it.second,2); 
+		if (it.second != 0){
+			denom_b += pow(it.second,2); 
+		}
 	}
 	return dot / (sqrt(denom_a) * sqrt(denom_b));
 };
@@ -107,8 +112,12 @@ float ItemBasedRecommender::WeightedAverage(int Targetuser){
 		numerator += it.simi * loadinput->ItemsMap[it.item][Targetuser];
 		denominator += it.simi;
 	}
-	predict = numerator/denominator;
-	return predict;
+	if (denominator == 0){
+		return 5;
+	}else{
+		predict = numerator/denominator;
+		return predict;
+	}
 };
 
 float ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist){
