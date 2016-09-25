@@ -28,7 +28,12 @@ int main(int argc,char *argv[]){
 
 
 	ItemBasedRecommender itembased(&loadinput);
-	// NonPersonalizedRecommender MeanBased(&loadinput);
+	NonPersonalizedRecommender MeanBased(&loadinput);
+	for (auto it:loadinput.AnswerMap){
+		for (auto it2:loadinput.AnswerMap[it.first])
+		cout <<"u"<<loadinput.MapCorrectUserId[it.first]<<":i"<<loadinput.MapCorrectItemId[it2.first]<<","<<it2.second<<endl;
+
+	}
 
 	return 0;
 }

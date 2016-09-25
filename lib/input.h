@@ -42,6 +42,7 @@ class LoadInput{
 		unordered_map<int,unordered_map<int,int>> ItemsMap;
 		unordered_map<int,string> MapCorrectUserId;
 		unordered_map<int,string> MapCorrectItemId;
+		unordered_map<int,unordered_map<int,double>> AnswerMap;
 		LoadInput(string &ratingsfile, string &targetsfile);//{
 			// std::cout << "Loading inputs..\n";
 			// readInputFiletoBuffer();

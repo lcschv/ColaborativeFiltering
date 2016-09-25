@@ -24,6 +24,7 @@ void NonPersonalizedRecommender::Recommender(){
 			r = RatingAverage;
 		}
 		cout <<"u"<<loadinput->MapCorrectUserId[nextTarget.user]<<":i"<<loadinput->MapCorrectItemId[nextTarget.item]<<","<<r<<endl;
+		loadinput->AnswerMap[nextTarget.user][nextTarget.item] += r/2;
 		nextTarget = loadinput->getNextTarget();
 	}
 };
