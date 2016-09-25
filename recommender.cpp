@@ -27,8 +27,8 @@ int main(int argc,char *argv[]){
 	LoadInput loadinput(ratingsfile,targetsfile);
 
 
-	// ItemBasedRecommender itembased(&loadinput);
-	NonPersonalizedRecommender MeanBased(&loadinput);
+	ItemBasedRecommender itembased(&loadinput);
+	// NonPersonalizedRecommender MeanBased(&loadinput);
 
 	return 0;
 }
