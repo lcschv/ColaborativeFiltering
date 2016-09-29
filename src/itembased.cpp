@@ -1,39 +1,40 @@
 #include "../lib/itembased.h"
 
-//Calculate the similarity between two itens.
 
 
 
+// Instantiate the loadinput from the class LoadInput. Passed as reference // 
 ItemBasedRecommender::ItemBasedRecommender(LoadInput* loadinput){
     this->loadinput = loadinput;
     cout << "UserId:ItemId,Prediction"<<endl;
     Recommender();
 };
 
-
+/*Main method of the class, it call all the other functions and calculate the predicion
+for each of the target users. The value 6.87 is the average of the itens of the whole dataset.
+It handles coldstart using the user average ratings or overall iten average.*/
 void ItemBasedRecommender::Recommender(){
 	tupla nextTarget;
 	tuplaItemSimilarity tempTupla;
 	double r = 0;
 	nextTarget = loadinput->getNextTarget();
+
+	//Calculates the prediction for each Target.
 	while (nextTarget.user != -1){
-		// cout << "Error nesse pia aqui:" << nextTarget.user<<" item:"<<nextTarget.item<<endl;
+		//Checks if theres no information about the target user in the dataset. Coldstart User.
 		if (loadinput->UsersMap.find(nextTarget.user) != loadinput->UsersMap.end()){	
 			
 			ItemsLikedbyTargetUser = loadinput->getListofItensLikedbyUser(nextTarget.user);
 			targetvectorlist = loadinput->getListofUsersthatRatedItem(nextTarget.item);
+			//If theres infomation about the user, but no information about the item in the dataset. Coldstart Item.
 			if (targetvectorlist.empty()){
-				// cout << "Dei erro aqui quando target vector ta vazio.."<<endl;
 				r = UserAverage(ItemsLikedbyTargetUser);
 			}else{
-				// cout << "Dei erro aqui quando target vector nao esta vazio"<<endl;
 				for (auto item:ItemsLikedbyTargetUser){
 					double similaridade = Similarity(nextTarget.item , item, targetvectorlist);
 					tempTupla.item = item.item;
 					tempTupla.simi = similaridade;
-					// cout << "calculei simi normalmente.."<<similaridade<<endl;
 					MyHeapPush(tempTupla);
-					// cout << "Dei o push normalmente.."<<endl;
 				}
 				if (!KNN.empty()){
 					r = WeightedAverage(nextTarget.user);
@@ -42,15 +43,16 @@ void ItemBasedRecommender::Recommender(){
 				}
 			}
 		}else {
+			//If theres no information about the user, but have information about the item in the dataset. Coldstart User handler.
 			targetvectorlist = loadinput->getListofUsersthatRatedItem(nextTarget.item);
 			if (targetvectorlist.size() != 0){
 				r = ItemAverage(targetvectorlist);
 			}else{
-				r = 6;
+				// No information of item and user. COLDSTART
+				r = 6.87;
 			}			
 		}
-		// cout <<"u"<<loadinput->MapCorrectUserId[nextTarget.user]<<":i"<<loadinput->MapCorrectItemId[nextTarget.item]<<","<<r<<endl;
-		loadinput->AnswerMap[nextTarget.user][nextTarget.item] = r/2;
+		cout <<"u"<<loadinput->MapCorrectUserId[nextTarget.user]<<":i"<<loadinput->MapCorrectItemId[nextTarget.item]<<","<<r<<endl;
 		nextTarget = loadinput->getNextTarget();
 		ItemsLikedbyTargetUser.clear();
 		targetvectorlist.clear();
@@ -58,7 +60,7 @@ void ItemBasedRecommender::Recommender(){
 	}
 };
 
-
+//Calculate the cosine similarity between two itens.
 double ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, const vector<tuplaUserScore> &targetvectorlist){
 	double denom_a, denom_b, dot;
 	denom_a = 0;
@@ -85,24 +87,21 @@ double ItemBasedRecommender::Similarity(int targetItem, tuplaItemScore item, con
 	}
 };
 
-
-
+/* This method just makes the push if the lowest similarity in the KNN vector is lower than the similarity to be pushed.
+Controls the size of the neighboorhood.*/
 void ItemBasedRecommender::MyHeapPush(tuplaItemSimilarity truplas) {
-	// cout << "Entrei no push.."<<endl;
-	if (KNN.size() < 20 && truplas.simi != 0){
-		// cout << "entrei aqui.."<<endl;
-		KNN.push_back(truplas);
+	// Change the value of the neighboorhood here.
+	if (KNN.size() < 100 && truplas.simi != 0){
+	KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
 	} else if (!KNN.empty() && KNN.front().simi < truplas.simi){
-		// cout << "entrei no segundo caso"<<endl;
 		KNN.erase(KNN.begin());
 		KNN.push_back(truplas);
     	push_heap(KNN.begin(), KNN.end(), cmp());
 	} 
-	// cout << "Entrei nao sei o que deu ero.."<<endl;
 };
 
-
+// Calculates the weighted average by multiplying    (Rating * simi(i,j)) / Sum (sim(i,j))
 double ItemBasedRecommender::WeightedAverage(int Targetuser){
 	double predict, numerator ,denominator;
 	predict = 0;
@@ -121,6 +120,7 @@ double ItemBasedRecommender::WeightedAverage(int Targetuser){
 	}
 };
 
+// Calculate the Average of the ratings of an specific user.
 double ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist){
 	double numerator, predict;
 	numerator = 0;
@@ -136,7 +136,7 @@ double ItemBasedRecommender::UserAverage(const vector<tuplaItemScore> &itemslist
 	}
 };
 
-
+// Calculate the Average of the ratings of an specific Item.
 double ItemBasedRecommender::ItemAverage(const vector<tuplaUserScore> &targetvectorlist){
 	double numerator, predict;
 		numerator = 0;

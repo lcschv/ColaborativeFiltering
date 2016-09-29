@@ -1,6 +1,6 @@
 #include "../lib/NonPersonalized.h"
 
-
+// Instantiate the loadinput from the class LoadInput. Passed as reference // 
 NonPersonalizedRecommender::NonPersonalizedRecommender(LoadInput* loadinput){
     this->loadinput = loadinput;
     cout << "UserId:ItemId,Prediction"<<endl;
@@ -9,13 +9,15 @@ NonPersonalizedRecommender::NonPersonalizedRecommender(LoadInput* loadinput){
     Recommender();
 };
 
-
+/*Main method of the class, for each target user, it checks if theres information about the item,
+if there is information it returns the item average rating. If theres no information about the item,
+uses the average of the user target, if theres no information about the user, use the item average of the dataset.*/
 void NonPersonalizedRecommender::Recommender(){
 	tupla nextTarget;
 	double r = 0;
 	nextTarget = loadinput->getNextTarget();
 	while (nextTarget.item != -1){
-		// cout << "Error nesse pia aqui:" << nextTarget.user<<" item:"<<nextTarget.item<<endl;
+
 		if (ItemsAverageRating.find(nextTarget.item) != ItemsAverageRating.end()){
 			r = ItemsAverageRating[nextTarget.item];
 		}else if (UserAverageRating.find(nextTarget.user) != UserAverageRating.end()) {
@@ -24,14 +26,13 @@ void NonPersonalizedRecommender::Recommender(){
 			r = RatingAverage;
 		}
 		cout <<"u"<<loadinput->MapCorrectUserId[nextTarget.user]<<":i"<<loadinput->MapCorrectItemId[nextTarget.item]<<","<<r<<endl;
-		loadinput->AnswerMap[nextTarget.user][nextTarget.item] += r/2;
 		nextTarget = loadinput->getNextTarget();
 	}
 };
 
 
-// unordered_map<int, double> ItemsAverageRating;
-
+/* Calculates the item average for each of the itens in the dataset and store it in a map called ItemsAverage.
+ This method also calculates the overall dataset average of the itens.*/
 void NonPersonalizedRecommender::CalcItensAverageRating(){
 	double sum = 0;
 	double sum2 = 0;
@@ -40,9 +41,7 @@ void NonPersonalizedRecommender::CalcItensAverageRating(){
 	int denomb = 0;
 
 	for (auto it:loadinput->ItemsMap){
-		// cout <<"Item: "<< it.first<<"	->";
 		for (auto it2:loadinput->ItemsMap[it.first]){
-			// cout <<"usuario>"<<it2.first<<"rating>"<< it2.second<<endl;
 			denom += 1;
 			sum += it2.second;
 		}
@@ -54,10 +53,11 @@ void NonPersonalizedRecommender::CalcItensAverageRating(){
 		sum = 0;
 		denomb += 1;
 	}
+	// DATASET ITEM AVERAGE
 	RatingAverage = sum2/denomb;
-	// cout << RatingAverage;
 };
 
+// Calculate the Average of the ratings of an specific user and store it in a map called UsersAverage.
 void NonPersonalizedRecommender::CalcUsersAverageRating(){
 	double sum = 0;
 	double sum2 = 0;
@@ -66,14 +66,11 @@ void NonPersonalizedRecommender::CalcUsersAverageRating(){
 	int denomb = 0;
 
 	for (auto it:loadinput->UsersMap){
-		// cout <<"Usuario: "<< it.first<<"	->";
 		for (auto it2:loadinput->UsersMap[it.first]){
-			// cout <<"Item>"<<it2.first<<"rating>"<< it2.second<<endl;
 			denom += 1;
 			sum += it2.second;
 		}
 		useraverage = sum / denom;
-		// cout << useraverage<<endl;
 		UserAverageRating[it.first] = useraverage;
 		denom = 0;
 		useraverage = 0;

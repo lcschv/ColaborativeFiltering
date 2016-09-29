@@ -17,23 +17,20 @@ using namespace std;
 
 int main(int argc,char *argv[]){
 	
+
+	/*Check if the parameters are ok.*/
 	if (argc != 3){
 		cout << "Wrong parameters, please use ./recommender ratings.csv targets.csv > submission.csv" <<endl;
 	return 0;
 	}
 		string ratingsfile(argv[1]);
 		string targetsfile(argv[2]);
-	// cout <<"Antes de chamar.." <<ratingsfile<<endl;
+
 	LoadInput loadinput(ratingsfile,targetsfile);
 
 
-	ItemBasedRecommender itembased(&loadinput);
-	NonPersonalizedRecommender MeanBased(&loadinput);
-	for (auto it:loadinput.AnswerMap){
-		for (auto it2:loadinput.AnswerMap[it.first])
-		cout <<"u"<<loadinput.MapCorrectUserId[it.first]<<":i"<<loadinput.MapCorrectItemId[it2.first]<<","<<it2.second<<endl;
-
-	}
+	ItemBasedRecommender itembased(&loadinput);	
+	// NonPersonalizedRecommender MeanBased(&loadinput);
 
 	return 0;
 }
